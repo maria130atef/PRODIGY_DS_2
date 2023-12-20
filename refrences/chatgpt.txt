@@ -1,0 +1,70 @@
+# Import necessary libraries
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+# Load the Titanic dataset
+url = "https://web.stanford.edu/class/archive/cs/cs109/cs109.1166/stuff/titanic.csv"
+titanic_df = pd.read_csv(url)
+
+# Display the first few rows of the dataset
+print(titanic_df.head())
+
+# Check for missing values
+print(titanic_df.isnull().sum())
+
+# Data Cleaning
+# Fill missing values for 'Age' with the median
+titanic_df['Age'].fillna(titanic_df['Age'].median(), inplace=True)
+
+# Fill missing values for 'Embarked' with the mode
+titanic_df['Embarked'].fillna(titanic_df['Embarked'].mode()[0], inplace=True)
+
+# Drop 'Cabin' column due to many missing values
+titanic_df.drop('Cabin', axis=1, inplace=True)
+
+# Check for missing values after cleaning
+print(titanic_df.isnull().sum())
+
+# Exploratory Data Analysis (EDA)
+
+# Explore the distribution of 'Survived'
+sns.countplot(x='Survived', data=titanic_df)
+plt.title('Distribution of Survived')
+plt.show()
+
+# Explore the distribution of 'Pclass'
+sns.countplot(x='Pclass', data=titanic_df)
+plt.title('Distribution of Pclass')
+plt.show()
+
+# Explore the distribution of 'Age'
+sns.histplot(titanic_df['Age'], bins=30, kde=True)
+plt.title('Distribution of Age')
+plt.show()
+
+# Explore the relationship between 'Pclass' and 'Survived'
+sns.countplot(x='Pclass', hue='Survived', data=titanic_df)
+plt.title('Survival Count by Pclass')
+plt.show()
+
+# Explore the relationship between 'Sex' and 'Survived'
+sns.countplot(x='Sex', hue='Survived', data=titanic_df)
+plt.title('Survival Count by Sex')
+plt.show()
+
+# Explore the relationship between 'Embarked' and 'Survived'
+sns.countplot(x='Embarked', hue='Survived', data=titanic_df)
+plt.title('Survival Count by Embarked')
+plt.show()
+
+# Explore the relationship between 'Age' and 'Survived'
+sns.histplot(x='Age', hue='Survived', data=titanic_df, bins=30, kde=True)
+plt.title('Survival Count by Age')
+plt.show()
+
+# Correlation heatmap for numerical features
+sns.heatmap(titanic_df.corr(), annot=True, cmap='coolwarm', linewidths=0.2)
+plt.title('Correlation Heatmap')
+plt.show()
